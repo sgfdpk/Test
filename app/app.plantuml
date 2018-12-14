@@ -1,0 +1,604 @@
+@startuml
+
+title __APP's Class Diagram__\n
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class AttractItemAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class Attraction {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class AttractionItem {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class AttractionListAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      enum AttractionTypes {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class BuildConfig {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class Country {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class CountryDetails {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class CountrySpinnerAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class CurrencyAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class ExampleInstrumentedTest {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.DB {
+      class Inserter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class Lection {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class LectionAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class LectionDetails {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class LectionsActivity {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class MainActivity {
+    }
+  }
+  
+
+  package android.support.v4 {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.nearby {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.localbroadcastmanager {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.appindexing {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.livedata {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.all {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.coreui {
+    class R {
+    }
+  }
+  
+
+  package android.support.customview {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.livedata {
+      package android.arch.lifecycle.livedata.core {
+        class R {
+        }
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.maps {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.location {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.swiperefreshlayout {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.games {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.graphics.drawable {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.plus {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.analytics {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.v7.appcompat {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.viewpager {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.wallet {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.fitness {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.v7.recyclerview {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.safetynet {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.cast {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.asynclayoutinflater {
+    class R {
+    }
+  }
+  
+
+  package android.support.slidingpanelayout {
+    class R {
+    }
+  }
+  
+
+  package android.support.cursoradapter {
+    class R {
+    }
+  }
+  
+
+  package androidx.versionedparcelable {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.ads {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.print {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.appstate {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.loader {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.drive {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.v7.palette {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.cardview {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    package android.arch.lifecycle.viewmodel {
+      class R {
+      }
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.panorama {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.compat {
+    class R {
+    }
+  }
+  
+
+  package android.support.transition {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.gcm {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.drawerlayout {
+    class R {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class R {
+    }
+  }
+  
+
+  package android.support.design {
+    class R {
+    }
+  }
+  
+
+  package android.support.coreutils {
+    class R {
+    }
+  }
+  
+
+  package android.support.constraint {
+    class R {
+    }
+  }
+  
+
+  package android.support.coordinatorlayout {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.appinvite {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.mediacompat {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.wearable {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.support.fragment {
+    class R {
+    }
+  }
+  
+
+  package com.google.android.gms {
+    package com.google.android.gms.identity {
+      class R {
+      }
+    }
+  }
+  
+
+  package android.arch.core {
+    class R {
+    }
+  }
+  
+
+  package android.arch.lifecycle {
+    class R {
+    }
+  }
+  
+
+  package android.support.documentfile {
+    class R {
+    }
+  }
+  
+
+  package android.support.v7.mediarouter {
+    class R {
+    }
+  }
+  
+
+  package android.support.interpolator {
+    class R {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class ReadLectionActivity {
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class Subject {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class SubjectDetails {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class SubjectsAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.DB {
+      class TableCreate {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.adapters {
+      class WorkListAdapter {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class Wort {
+      }
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    package com.example.user.diplom_2.data {
+      class WortDetails {
+      }
+    }
+  }
+  
+
+  AttractItemAdapter -up-|> ArrayAdapter
+  AttractionListAdapter -up-|> ArrayAdapter
+  CountrySpinnerAdapter -up-|> ArrayAdapter
+  LectionAdapter -up-|> Adapter
+  LectionsActivity -up-|> OnItemSelectedListener
+  LectionsActivity -up-|> AppCompatActivity
+  LectionsActivity o-- LectionAdapter : lectionAdapter
+  LectionsActivity o-- WorkListAdapter : workAdapter
+  LectionsActivity o-- AttractItemAdapter : attractItemAdapter
+  LectionsActivity o-- AttractionListAdapter : attractionListAdapter
+  LectionsActivity o-- CountrySpinnerAdapter : countrySpinnerAdapter
+  MainActivity -up-|> AppCompatActivity
+  MainActivity o-- SubjectsAdapter : subjectsAdapter
+  ReadLectionActivity -up-|> AppCompatActivity
+  SubjectsAdapter -up-|> Adapter
+  WorkListAdapter -up-|> Adapter
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

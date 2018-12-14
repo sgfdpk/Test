@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Diplom_2</string>
+    <string-array name="attracts_list">
+        <item>Фонтаны</item>
+        <item>Парки</item>
+        <item>Улицы</item>
+    </string-array>
+</resources>

@@ -1,0 +1,258 @@
+@startuml
+
+title __DIPLOM_2's Class Diagram__\n
+
+  package com.example.user.diplom_2 {
+    class LectionsActivity {
+        ~ url : String
+        ~ url_end : String
+        ~ geoUriString : String
+        {static} - FILE_NAME : String
+        ~ serverPort : int
+        ~ googleMap : GoogleMap
+        ~ tabHost : TabHost
+        ~ lastX : float
+        ~ subject : int
+        ~ layoutManager : LinearLayoutManager
+        ~ workManager : LinearLayoutManager
+        ~ countryTab : LinearLayout
+        ~ attractionTab : LinearLayout
+        ~ lections : ArrayList<Lection>
+        ~ works : ArrayList<Wort>
+        ~ recyclerView : RecyclerView
+        ~ recyclerViewwork : RecyclerView
+        ~ db : SQLiteDatabase
+        ~ attractionList : ArrayList<AttractionItem>
+        ~ attractionDetailedList : ArrayList<Attraction>
+        ~ attracts : Spinner
+        ~ attractDetail : Spinner
+        ~ countries : Spinner
+        ~ currency : HashMap<String, String>
+        ~ country_currency : HashMap<String, String>
+        ~ currency_from : Spinner
+        ~ currency_to : Spinner
+        ~ currency_from_input : EditText
+        ~ currency_to_output : EditText
+        + onNothingSelected()
+        + onItemSelected()
+        + createMapView()
+        + addMarker()
+        + initList()
+        + initFountainListDB()
+        + ConnectToDatabase()
+        + switchTabs()
+        + onTouchEvent()
+        {static} + selectSpinnerItemByValue()
+        # onCreate()
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class UpdateDB {
+        # doInBackground()
+        # onPostExecute()
+    }
+  }
+  
+
+  enum Status {
+    PENDING
+    RUNNING
+    FINISHED
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class Currency {
+        # doInBackground()
+        # onPostExecute()
+    }
+  }
+  
+
+  enum Status {
+    PENDING
+    RUNNING
+    FINISHED
+  }
+  
+
+  package android.support.v4 {
+    class HostCallbacks {
+        + HostCallbacks()
+        + onDump()
+        + onShouldSaveFragmentState()
+        + onGetLayoutInflater()
+        + onGetHost()
+        + onSupportInvalidateOptionsMenu()
+        + onStartActivityFromFragment()
+        + onStartActivityFromFragment()
+        + onStartIntentSenderFromFragment()
+        + onRequestPermissionsFromFragment()
+        + onShouldShowRequestPermissionRationale()
+        + onHasWindowAnimations()
+        + onGetWindowAnimations()
+        + onAttachFragment()
+        + onFindViewById()
+        + onHasView()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class NonConfigurationInstances {
+        ~ custom : Object
+        ~ viewModelStore : ViewModelStore
+        ~ fragments : FragmentManagerNonConfig
+        ~ NonConfigurationInstances()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class ExtraData {
+        + ExtraData()
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class MainActivity {
+        ~ layoutManager : LinearLayoutManager
+        ~ subjects : ArrayList<Subject>
+        ~ recyclerView : RecyclerView
+        + onConfigurationChanged()
+        # onCreate()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class HostCallbacks {
+        + HostCallbacks()
+        + onDump()
+        + onShouldSaveFragmentState()
+        + onGetLayoutInflater()
+        + onGetHost()
+        + onSupportInvalidateOptionsMenu()
+        + onStartActivityFromFragment()
+        + onStartActivityFromFragment()
+        + onStartIntentSenderFromFragment()
+        + onRequestPermissionsFromFragment()
+        + onShouldShowRequestPermissionRationale()
+        + onHasWindowAnimations()
+        + onGetWindowAnimations()
+        + onAttachFragment()
+        + onFindViewById()
+        + onHasView()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class NonConfigurationInstances {
+        ~ custom : Object
+        ~ viewModelStore : ViewModelStore
+        ~ fragments : FragmentManagerNonConfig
+        ~ NonConfigurationInstances()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class ExtraData {
+        + ExtraData()
+    }
+  }
+  
+
+  package com.example.user.diplom_2 {
+    class ReadLectionActivity {
+        ~ lectionName : String
+        ~ adress : String
+        ~ workName : String
+        ~ db : SQLiteDatabase
+        ~ query : Cursor
+        # onCreate()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class HostCallbacks {
+        + HostCallbacks()
+        + onDump()
+        + onShouldSaveFragmentState()
+        + onGetLayoutInflater()
+        + onGetHost()
+        + onSupportInvalidateOptionsMenu()
+        + onStartActivityFromFragment()
+        + onStartActivityFromFragment()
+        + onStartIntentSenderFromFragment()
+        + onRequestPermissionsFromFragment()
+        + onShouldShowRequestPermissionRationale()
+        + onHasWindowAnimations()
+        + onGetWindowAnimations()
+        + onAttachFragment()
+        + onFindViewById()
+        + onHasView()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class NonConfigurationInstances {
+        ~ custom : Object
+        ~ viewModelStore : ViewModelStore
+        ~ fragments : FragmentManagerNonConfig
+        ~ NonConfigurationInstances()
+    }
+  }
+  
+
+  package android.support.v4 {
+    class ExtraData {
+        + ExtraData()
+    }
+  }
+  
+
+  LectionsActivity -up-|> OnItemSelectedListener
+  LectionsActivity -up-|> AppCompatActivity
+  LectionsActivity o-- LectionAdapter : lectionAdapter
+  LectionsActivity o-- WorkListAdapter : workAdapter
+  LectionsActivity o-- AttractItemAdapter : attractItemAdapter
+  LectionsActivity o-- AttractionListAdapter : attractionListAdapter
+  LectionsActivity o-- CountrySpinnerAdapter : countrySpinnerAdapter
+  LectionsActivity +-down- UpdateDB
+  LectionsActivity +-down- Currency
+  LectionsActivity +-down- HostCallbacks
+  LectionsActivity +-down- NonConfigurationInstances
+  LectionsActivity +-down- ExtraData
+  UpdateDB -up-|> AsyncTask
+  UpdateDB +-down- Status
+  Currency -up-|> AsyncTask
+  Currency +-down- Status
+  HostCallbacks -up-|> FragmentHostCallback
+  MainActivity -up-|> AppCompatActivity
+  MainActivity o-- SubjectsAdapter : subjectsAdapter
+  MainActivity +-down- HostCallbacks
+  MainActivity +-down- NonConfigurationInstances
+  MainActivity +-down- ExtraData
+  HostCallbacks -up-|> FragmentHostCallback
+  ReadLectionActivity -up-|> AppCompatActivity
+  ReadLectionActivity +-down- HostCallbacks
+  ReadLectionActivity +-down- NonConfigurationInstances
+  ReadLectionActivity +-down- ExtraData
+  HostCallbacks -up-|> FragmentHostCallback
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
