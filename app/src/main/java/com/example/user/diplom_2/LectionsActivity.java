@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -51,13 +55,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -126,19 +133,57 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
     Spinner currency_from,currency_to;
     EditText currency_from_input,currency_to_output;
 
+    private static final int CAMERA_REQUEST = 0;
+    private ImageView imageView;
+    private Button take_a_photo;
 
 
+
+
+    class SendImg extends AsyncTask<Bitmap,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Bitmap... map) {
+            Log.e("Original   dimensions 2", map[0].getWidth()+" "+map[0].getHeight());
+            Socket socket;
+            try {
+                socket = new Socket("192.168.0.101", serverPort);
+                socket.setSoTimeout(10000);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                map[0].compress(Bitmap.CompressFormat.JPEG,100,stream);
+                Log.e("Compressed dimensions", map[0].getWidth()+" "+map[0].getHeight());
+                byte[] byteArray = stream.toByteArray();
+                InputStream inn = new ByteArrayInputStream(byteArray);
+                dos.writeShort(1);
+                dos.writeInt(byteArray.length);
+                int len = 0 ;
+                byte [] b = new byte [1024];
+                while ((len = inn.read(b)) != -1)
+                {
+                    dos.write(b,0,len);
+                }
+                dos.flush();
+                stream.close();
+                inn.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
 
     class UpdateDB extends AsyncTask<Void,Void,Void>{
         @Override
         protected Void doInBackground(Void... voids) {
-          //  BufferedReader fromServer;
             try {
                 Socket socket = new Socket("192.168.0.101", serverPort);
                 socket.setSoTimeout(10000);
-                PrintWriter toServer = new PrintWriter(socket.getOutputStream(), true);
+                DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
                 // Отправка данных на сервер
-                toServer.println("Hello from TEST");
+                toServer.writeShort(2);
                 // Ответ сервера
                 InputStream in = socket.getInputStream();
                 DataInputStream din = new DataInputStream(in);
@@ -231,8 +276,6 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
                 WebView attractInfo = findViewById(R.id.attract_description);
                 attractInfo.setHorizontalScrollBarEnabled(true);
                 attractInfo.setBackgroundColor(Color.TRANSPARENT);
-               // attractInfo.loadData(att.getDescription()+"\n\n Находится"+att.getAdress()+ "\n<a href=\""+att.getUrl()+"\">текст ссылки</a>",
-               //               "text/html", "UTF-8");
                 attractInfo.loadDataWithBaseURL(null,att.getDescription()+"\n Находится"+att.getAdress()+ "\n<a href=\""+att.getUrl()+"\">текст ссылки</a>",
                         "text/html", "UTF-8",null);
             }
@@ -253,6 +296,9 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
     private class Currency extends AsyncTask<String,Void,String>{
         @Override
         protected String doInBackground(String ...params) {
+            if(currency_from.getSelectedItem()==null||currency_from.getSelectedItem()==""||currency_from.getSelectedItem()==" ")
+                return null;
+
             BufferedReader reader ;
             StringBuilder buf=new StringBuilder();
             try{
@@ -267,11 +313,14 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
                     buf.append(line);
             }catch (MalformedURLException ex){ ex.printStackTrace();}
              catch (IOException ex){ ex.printStackTrace();}
+             catch (NumberFormatException ex){ex.printStackTrace();}
             return(buf.toString());
         }
         @Override
         protected void onPostExecute(String content) {
             try{
+                if(content==null)
+                    return;
             JSONObject jsonObject = new JSONObject(content);
             JSONObject json = jsonObject.getJSONObject(currency.get(currency_from.getSelectedItem())+"_"+currency.get(currency_to.getSelectedItem()));
             double value = json.getDouble("val");
@@ -279,6 +328,7 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
             DecimalFormat df = new DecimalFormat("#.##");
             currency_to_output.setText(String.valueOf(df.format(result)));
             } catch (JSONException e){e.printStackTrace();}
+            catch (NumberFormatException ex){ex.printStackTrace();}
         }
     }
     /**
@@ -314,10 +364,8 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
             case  MotionEvent.ACTION_UP:{
                 currentX = event.getX();
                 if (lastX < currentX&&(currentX-lastX)>100)
-                    //  switchTabs(false);
                     switchTabs(true);
                 if (lastX > currentX&&(lastX-currentX)>100)
-                    //switchTabs(true);
                     switchTabs(false);
                 break;
             }
@@ -336,6 +384,19 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Bitmap thumbnailBitmap = (Bitmap) data.getExtras().get("data");
+            Log.e("Original   dimensions", thumbnailBitmap.getWidth()+" "+thumbnailBitmap.getHeight());
+            imageView.setImageBitmap(thumbnailBitmap);
+            new SendImg().execute(thumbnailBitmap);
+            tabHost.setCurrentTab(2);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -343,6 +404,15 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
         Intent intent = getIntent();
         createMapView();
 
+        imageView = findViewById(R.id.photo);
+        take_a_photo = findViewById(R.id.take_photo);
+        take_a_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
         Display display = getWindowManager().getDefaultDisplay();
         double width = display.getWidth();
         double doubleSize = width/4;
@@ -400,9 +470,7 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s == null)
-                    return;
-                else
+                if(currency_from.getSelectedItem() != null || currency_from.getSelectedItem() !=""|| currency_from.getSelectedItem() !=" ")
                     new Currency().execute(url +currency.get(currency_from.getSelectedItem())+"_"+currency.get(currency_to.getSelectedItem())+url_end);
             }
 
@@ -437,30 +505,15 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
         Set<String> keys = currency.keySet();
         String[] data = keys.toArray(new String[keys.size()]);
 
-            currency_from = findViewById(R.id.converter_spinner_from);
-            currency_to = findViewById(R.id.converter_spinner_to);
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,data);
-
-           // currency_from.setDropDownWidth((int)doubleSize);
+        currency_from = findViewById(R.id.converter_spinner_from);
+        currency_to = findViewById(R.id.converter_spinner_to);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,data);
 
         currency_from.setAdapter(spinnerArrayAdapter);
         currency_to.setAdapter(spinnerArrayAdapter);
 
         //------------------------------------------------------------------------------------------
 
-        Button map = findViewById(R.id.to_map_button);
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Attraction find = (Attraction)attractDetail.getSelectedItem();
-                geoUriString = "geo:"+find.getLatitude()+","+find.getLongitude()+"?z=14";
-                Uri geoUri = Uri.parse(geoUriString);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
-            }
-        });
 
         //------------------------------------------------------------------------------------------
 
@@ -490,31 +543,10 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
         attracts.setAdapter(attractItemAdapter);
         attracts.setOnItemSelectedListener(this);
 
-     //   initFountainList();
-        //-------------------------------------------------------------------------------------------
-
-
-        //------------------------------------------------------------------------------------------
-       // attractDetail = findViewById(R.id.attract_detail_spinner);
-        //attractionListAdapter = new AttractionListAdapter(this,attractionDetailedList);
-        //attractDetail.setAdapter(attractionListAdapter);
-        //attractDetail.setVisibility(View.GONE);
-
-
-       // attracts = findViewById(R.id.spinner_attract);
-//        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-       // attracts.setAdapter(adapter);
-
-
-
-
-
-
         //------------------------------------------------------------------------------------------
 
         countryTab = findViewById(R.id.tab4);
         attractionTab =findViewById(R.id.tab3);
-        //setTitle("TabHost");
 
         tabHost = findViewById(R.id.tabhost);
 
@@ -530,22 +562,17 @@ public class LectionsActivity extends AppCompatActivity implements AdapterView.O
         tabSpec.setIndicator("Задания");
         tabHost.addTab(tabSpec);
 
-
             tabSpec = tabHost.newTabSpec("tag3");
             if(subject==0){
                 tabSpec.setContent(R.id.tab4);
                 attractionTab.setVisibility(View.GONE);
-                //countryTab.setVisibility(View.VISIBLE);
             }
             else{
                 tabSpec.setContent(R.id.tab3);
                 countryTab.setVisibility(View.GONE);
-                //attractionTab.setVisibility(View.VISIBLE);
             }
             tabSpec.setIndicator("Доп. Материалы");
             tabHost.addTab(tabSpec);
-
-
 
         tabHost.setCurrentTab(0);
     }
